@@ -1,7 +1,7 @@
 # https://data.nasa.gov/resource/eva.json (with modifications)
-data_f = open('/home/sarah/Projects/astronaut-analysis/data.json', 'r')
-data_t = open('/home/sarah/Projects/astronaut-analysis/data.csv','w')
-g_file = 'myplot.png'
+data_f = open('./eva-data.json', 'r')
+data_t = open('./eva-data.csv','w')
+g_file = './cumulative_eva_graph.png'
 
 fieldnames = ("EVA #", "Country", "Crew    ", "Vehicle", "Date", "Duration", "Purpose")
 
@@ -57,5 +57,5 @@ plt.plot(date,t[1:], 'ko-')
 plt.xlabel('Year')
 plt.ylabel('Total time spent in space to date (hours)')
 plt.tight_layout()
-plt.savefig(g_file)
+plt.savefig("cumulative_eva_graph.png")
 plt.show()
