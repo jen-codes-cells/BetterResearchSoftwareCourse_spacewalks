@@ -36,9 +36,9 @@ for i in data:
         if time_dt == '':
             pass
         else:
-            time=dt.datetime.strptime(time_dt,'%H:%M')
-            time_float = dt.timedelta(hours=time.hour, minutes=time.minute, seconds=time.second).total_seconds()/(60*60)
-            print(time,time_float)
+            t=dt.datetime.strptime(time_dt,'%H:%M')
+            time_float = dt.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second).total_seconds()/(60*60)
+            print(t,time_float)
             time.append(time_float)
             if 'date' in data[j].keys():
                 date.append(dt.datetime.strptime(data[j]['date'][0:10], '%Y-%m-%d'))
@@ -48,14 +48,14 @@ for i in data:
                 time.pop(0)
     j+=1
 
-time=[0]
+t=[0]
 for i in time:
-    time.append(time[-1]+i)
+    t.append(t[-1]+i)
 
 date,time = zip(*sorted(zip(date, time)))
 
 
-plt.plot(date,time[1:], 'ko-')
+plt.plot(date,t[1:], 'ko-')
 plt.xlabel('Year')
 plt.ylabel('Total time spent in space to date (hours)')
 plt.tight_layout()
