@@ -13,6 +13,9 @@ def main (input_file, output_file, graph_file):
     # convert and export file to csv
     write_dataframe_to_csv(eva_data, output_file)
 
+    # sort dataframe by date
+    eva_data.sort_values("date", inplace=True)
+
     # plot data
     plot_cumulative_time_in_space(eva_data, graph_file)
 
@@ -61,7 +64,6 @@ def plot_cumulative_time_in_space (df, file_path):
         file_path (file or str): file object or path where plot should be saved
     """
     print("__PREPARING PLOT__")
-    df.sort_values('date', inplace=True) # order date values to work in plot X-axis
     # extract time spent in space and calculate cumulative value for plotting
     df = add_duration_hours(df)
     df['cumulative_time'] = df['duration_hours'].cumsum()
@@ -109,6 +111,7 @@ def add_duration_hours(df):
 # main code
 
 if __name__ == "__main__":
+
     if len(sys.argv) < 3:
         # Data source: https://data.nasa.gov/resource/eva.json (with modifications)
         input_file = open('./data/eva-data.json', 'r', encoding='ascii') # forcing ASCII encoding to avoid cross-platform errors
