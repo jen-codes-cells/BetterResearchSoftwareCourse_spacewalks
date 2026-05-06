@@ -1,8 +1,23 @@
 #load required packages
 import matplotlib.pyplot as plt
 import pandas as pd
+import sys
 
 # define functions
+
+def main (input_file, output_file, graph_file):
+    print("__START__")
+    # read data from json file
+    eva_data = read_json_to_dataframe(input_file)
+
+    # convert and export file to csv
+    write_dataframe_to_csv(eva_data, output_file)
+
+    # plot data
+    plot_cumulative_time_in_space(eva_data, graph_file)
+
+    print("__END__")
+
 def read_json_to_dataframe (input_file):
     """
     Read data from a JSON file into a Pandas dataframe
@@ -46,10 +61,10 @@ def plot_cumulative_time_in_space (df, file_path):
         file_path (file or str): file object or path where plot should be saved
     """
     print("__PREPARING PLOT__")
-    eva_data.sort_values('date', inplace=True) # order date values to work in plot X-axis
+    df.sort_values('date', inplace=True) # order date values to work in plot X-axis
     # extract time spent in space and calculate cumulative value for plotting
-    eva_data['duration_hours'] = eva_data['duration'].str.split(":").apply(lambda x: int(x[0]) + int(x[1])/60)
-    eva_data['cumulative_time'] = eva_data['duration_hours'].cumsum()
+    df = add_duration_hours(df)
+    df['cumulative_time'] = df['duration_hours'].cumsum()
     print(f"Plotting {graph_file} to graph file")
     # plot cumulative time spent in space against date
     plt.plot(df['date'], df['cumulative_time'], 'ko-')
@@ -60,20 +75,52 @@ def plot_cumulative_time_in_space (df, file_path):
     plt.show()
     print("__FINISHED PLOTTING__")
 
-# Data source: https://data.nasa.gov/resource/eva.json (with modifications)
-input_file = open('./eva-data.json', 'r', encoding='ascii') # forcing ASCII encoding to avoid cross-platform errors
-output_file = open('./eva-data.csv', 'w', encoding='utf-8') # forcing UTF-8 encoding to avoid cross-platform errors
-graph_file = './cumulative_eva_graph.png'
+def text_to_duration(duration):
+    """
+    Convert a text format duration "HH:MM" to duration in hours
 
-print("__START__")
-# read data from json file
-eva_data = read_json_to_dataframe(input_file)
+    Args:
+        duration (str): The text format duration
 
-# convert and export file to csv
-write_dataframe_to_csv(eva_data, output_file)
+    Returns:
+        duration_hours (float): The duration in hours
+    """
+    hours, minutes = duration.split(":")
+    duration_hours = int(hours) + int(minutes)/6  # there is an intentional bug on this line (should divide by 60 not 6)
+    return duration_hours
 
 
-# plot data
-plot_cumulative_time_in_space(eva_data, graph_file)
+def add_duration_hours(df):
+    """
+    Add duration in hours (duration_hours) variable to the dataset
 
-print("__END__")
+    Args:
+        df (pd.DataFrame): The input dataframe.
+
+    Returns:
+        df_copy (pd.DataFrame): A copy of df with the new duration_hours variable added
+    """
+    df_copy = df.copy()
+    df_copy["duration_hours"] = df_copy["duration"].apply(
+        text_to_duration
+    )
+    return df_copy
+
+# main code
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        # Data source: https://data.nasa.gov/resource/eva.json (with modifications)
+        input_file = open('./eva-data.json', 'r', encoding='ascii') # forcing ASCII encoding to avoid cross-platform errors
+        output_file = open('./eva-data.csv', 'w', encoding='utf-8') # forcing UTF-8 encoding to avoid cross-platform errors
+        print("Using default input and output")
+    else:
+        input_file = sys.argv[1]
+        output_file = sys.argv[2]
+        print("Using custom input and output files")
+
+
+    graph_file = './cumulative_eva_graph.png'
+    main(input_file, output_file, graph_file)
+
+print("__SCRIPT FINISHED__")
