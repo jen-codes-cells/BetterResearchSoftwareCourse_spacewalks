@@ -32,14 +32,14 @@ for i in data:
     # and this bit
     csv_writer.writerow(data[j].values())
     if 'duration' in data[j].keys():
-        tt=data[j]['duration']
-        if tt == '':
+        time_dt=data[j]['duration']
+        if time_dt == '':
             pass
         else:
-            t=dt.datetime.strptime(tt,'%H:%M')
-            ttt = dt.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second).total_seconds()/(60*60)
-            print(t,ttt)
-            time.append(ttt)
+            time=dt.datetime.strptime(time_dt,'%H:%M')
+            time_float = dt.timedelta(hours=time.hour, minutes=time.minute, seconds=time.second).total_seconds()/(60*60)
+            print(time,time_float)
+            time.append(time_float)
             if 'date' in data[j].keys():
                 date.append(dt.datetime.strptime(data[j]['date'][0:10], '%Y-%m-%d'))
                 #date.append(data[j]['date'][0:10])
@@ -48,14 +48,14 @@ for i in data:
                 time.pop(0)
     j+=1
 
-t=[0]
+time=[0]
 for i in time:
-    t.append(t[-1]+i)
+    time.append(time[-1]+i)
 
 date,time = zip(*sorted(zip(date, time)))
 
 
-plt.plot(date,t[1:], 'ko-')
+plt.plot(date,time[1:], 'ko-')
 plt.xlabel('Year')
 plt.ylabel('Total time spent in space to date (hours)')
 plt.tight_layout()
