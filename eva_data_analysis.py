@@ -111,8 +111,8 @@ def add_duration_hours(df):
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         # Data source: https://data.nasa.gov/resource/eva.json (with modifications)
-        input_file = open('./eva-data.json', 'r', encoding='ascii') # forcing ASCII encoding to avoid cross-platform errors
-        output_file = open('./eva-data.csv', 'w', encoding='utf-8') # forcing UTF-8 encoding to avoid cross-platform errors
+        input_file = open('./data/eva-data.json', 'r', encoding='ascii') # forcing ASCII encoding to avoid cross-platform errors
+        output_file = open('./results/eva-data.csv', 'w', encoding='utf-8') # forcing UTF-8 encoding to avoid cross-platform errors
         print("Using default input and output")
     else:
         input_file = sys.argv[1]
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         print("Using custom input and output files")
 
 
-    graph_file = './cumulative_eva_graph.png'
+    graph_file = './results/cumulative_eva_graph.png'
     main(input_file, output_file, graph_file)
 
 print("__SCRIPT FINISHED__")
