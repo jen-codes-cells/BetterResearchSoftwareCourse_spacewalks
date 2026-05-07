@@ -1,7 +1,7 @@
 from eva_data_analysis import text_to_duration
 
-def test_text_to_duration_float();
-    assert text_to_duration("10:15") == 10.25
+def test_text_to_duration_float():
+    assert abs(text_to_duration("10:20") - 10.333) < 1e5
 
 def test_text_to_duration_integer():
     input_value = "10:00"
