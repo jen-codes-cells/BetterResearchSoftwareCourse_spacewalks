@@ -88,7 +88,7 @@ def text_to_duration(duration):
         duration_hours (float): The duration in hours
     """
     hours, minutes = duration.split(":")
-    duration_hours = int(hours) + int(minutes)/6  # there is an intentional bug on this line (should divide by 60 not 6)
+    duration_hours = int(hours) + int(minutes)/60  # there is an intentional bug on this line (should divide by 60 not 6)
     return duration_hours
 
 
@@ -125,5 +125,3 @@ if __name__ == "__main__":
 
     graph_file = './results/cumulative_eva_graph.png'
     main(input_file, output_file, graph_file)
-
-print("__SCRIPT FINISHED__")
