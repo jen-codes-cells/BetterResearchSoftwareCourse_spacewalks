@@ -6,6 +6,3 @@ def test_text_to_duration_float():
 def test_text_to_duration_integer():
     input_value = "10:00"
     assert text_to_duration(input_value) == 10
-
-test_text_to_duration_float()
-test_text_to_duration_integer()
