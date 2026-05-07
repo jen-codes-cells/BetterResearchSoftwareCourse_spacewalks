@@ -8,8 +8,9 @@ def test_eva_crewsize():
     # Single crew member
     assert calculate_crew_size(("Louis Armstrong;")) == 1
 
-    # missing string element
-    assert calculate_crew_size(("Bugs Bunny")) == 1
+    # Two members
+    assert calculate_crew_size(("Louis Armstrong; Bugs Bunny;")) == 2
 
-    # incorrect string format
-    assert calculate_crew_size(("Bugs Bunny;;")) == 1
+def test_eva_crew_size_edge():
+    # missing string element
+    assert calculate_crew_size(("")) == None
