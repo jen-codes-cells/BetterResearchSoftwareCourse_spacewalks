@@ -1,16 +1,17 @@
 import pytest
 from eva_data_analysis import calculate_crew_size
 
-def test_eva_crewsize():
+@pytest.mark.parametrize("input_value, expected_result", [
+    ("Louis Armstrong;", 1),
+    ("Louis Armstrong; Bugs Bunny;", 2)
+])
+def test_calculate_crew_size(input_value, expected_result):
     """
-    To test the calculate_crew_size function
+    Test that it returns ground truth values for typical crew values
     """
-    # Single crew member
-    assert calculate_crew_size(("Louis Armstrong;")) == 1
+    actual_result = calculate_crew_size(input_value)
+    assert actual_result == expected_result
 
-    # Two members
-    assert calculate_crew_size(("Louis Armstrong; Bugs Bunny;")) == 2
-
-def test_eva_crew_size_edge():
+def test_crew_size_edge():
     # missing string element
     assert calculate_crew_size(("")) == None
